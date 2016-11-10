@@ -1,0 +1,7 @@
+{
+  "GCLOUD_PROJECT": "ticket-148919",
+  "GCLOUD_PROJECT_URL": "https://ticket-148919.appspot.com/ticketManagement/ticket/",
+  "DATA_BACKEND": "mongodb",
+  "MONGO_URL": "mongodb://penny:diglet@ds139567.mlab.com:39567/amkb-db",
+  "MONGO_COLLECTION": "tickets"
+}

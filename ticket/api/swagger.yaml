@@ -1,0 +1,773 @@
+---
+swagger: "2.0"
+info:
+  description: "This is a Reference Implementation (RI) built by AMKB Cloud using\
+    \ MagicDraw, Swagger & Nomos RuleX. You can find out more about AMKB Cloud \n\
+    \ at <a href=\"http://amkbcloud.com\">http://amkbcloud.com</a>, MagicDraw \n at\
+    \ <a href=\"http://www.nomagic.com\">http://www.nomagic.com</a>, Swagger at <a\
+    \ href=\"http://swagger.io\">http://swagger.io</a>, and Nomos RuleX at <a href=\"\
+    http://nomos-software.com\">http://nomos-software.com</a>"
+  version: "15.5.0"
+  title: "AMKB Cloud RI - TMF Ticket Management REST API"
+  termsOfService: "http://amkbcloud.com/terms"
+  contact:
+    name: "support@amkbcloud.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "ticket-148919.appspot.com"
+basePath: "/ticketManagement"
+schemes:
+- "https"
+- "http"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+paths:
+  /hub:
+    get:
+      tags:
+      - "hub"
+      summary: "Retrieve hubs"
+      description: "Retrieval of a listener or of a collection of listeners."
+      operationId: "retrieveHubs"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Hub"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Hub not found"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "Hub"
+    post:
+      tags:
+      - "hub"
+      summary: "Create hub"
+      description: "This operation is used to register a listener to be notified of\
+        \ the following events: create, update and delete."
+      operationId: "createHub"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "hub"
+        description: "hub to be created"
+        required: true
+        schema:
+          $ref: "#/definitions/Hub"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Hub"
+        400:
+          description: "Bad request"
+        405:
+          description: "Validation exception"
+          schema:
+            $ref: "#/definitions/RuleXValidation"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "Hub"
+    x-swagger-router-controller: "hub"
+  /hub/{id}:
+    get:
+      tags:
+      - "hub"
+      summary: "Retrieve hub"
+      description: "Retrieval of a listener."
+      operationId: "retrieveHub"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of hub that needs to be retrieved"
+        required: true
+        type: "string"
+      - name: "fields"
+        in: "query"
+        description: "Query parameter fields"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Hub"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Hub Listener not found"
+      x-swagger-router-controller: "Hub"
+    delete:
+      tags:
+      - "hub"
+      summary: "Delete hub"
+      description: "This operation is used to unregister a listener."
+      operationId: "deleteHub"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of hub that needs to be deleted"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Hub Listener not found"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "Hub"
+    x-swagger-router-controller: "hub"
+  /ticket:
+    get:
+      tags:
+      - "ticket"
+      summary: "Retrieve tickets"
+      description: "Retrieval of a ticket or of a collection of tickets depending\
+        \ on query parameters."
+      operationId: "retrieveTickets"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "fields"
+        in: "query"
+        description: "Space separated fields to display in response - id href creationDate\
+          \ (default fields)"
+        required: false
+        type: "string"
+      - name: "severity"
+        in: "query"
+        description: "For filtering: The severity of the trouble. It can be for example:\
+          \ Minor, Major, Critical."
+        required: false
+        type: "string"
+      - name: "type"
+        in: "query"
+        description: "For filtering: Type of ticket - trouble, location, meeting,\
+          \ etc."
+        required: false
+        type: "string"
+      - name: "status"
+        in: "query"
+        description: "For filtering: The status of the trouble - submitted, rejected,\
+          \ acknowledged, in progress pending, in progress held, cancelled, resolved,\
+          \ closed."
+        required: false
+        type: "string"
+      - name: "targetResolutionDate"
+        in: "query"
+        description: "For filtering: the target resolution date."
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Ticket"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Ticket not found"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "Ticket"
+    post:
+      tags:
+      - "ticket"
+      summary: "Create ticket"
+      description: "This operation is used to create a ticket."
+      operationId: "createTicket"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "ticket"
+        description: "ticket to be created"
+        required: true
+        schema:
+          $ref: "#/definitions/CreateTicket"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Ticket"
+        400:
+          description: "Bad request"
+        405:
+          description: "Validation exception"
+          schema:
+            $ref: "#/definitions/RuleXValidation"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "Ticket"
+    x-swagger-router-controller: "ticket"
+  /ticket/{id}:
+    get:
+      tags:
+      - "ticket"
+      summary: "Retrieve ticket"
+      description: "Retrieval of a ticket."
+      operationId: "retrieveTicket"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of ticket that needs to be retrieved"
+        required: true
+        type: "string"
+      - name: "fields"
+        in: "query"
+        description: "Query parameter fields"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Ticket"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Ticket not found"
+      x-swagger-router-controller: "Ticket"
+    put:
+      tags:
+      - "ticket"
+      summary: "Fully update ticket"
+      description: "This operation is used to completely update the representation\
+        \ of a ticket."
+      operationId: "fullyUpdateTicket"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of ticket that needs to be fully updated"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "ticket"
+        description: "ticket to be fully updated"
+        required: true
+        schema:
+          $ref: "#/definitions/UpdateTicket"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Ticket"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Ticket not found"
+        405:
+          description: "Validation exception"
+          schema:
+            $ref: "#/definitions/RuleXValidation"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "Ticket"
+    delete:
+      tags:
+      - "ticket"
+      summary: "Delete ticket"
+      description: "Delete a ticket from a collection of tickets."
+      operationId: "deleteTicket"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of ticket that needs to be deleted"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Ticket not found"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "Ticket"
+    patch:
+      tags:
+      - "ticket"
+      summary: "Partially update ticket"
+      description: "This operation is used to partially update the representation\
+        \ of a ticket. Patching of status is only allowed to transition: from 'Resolved'\
+        \ to 'Closed'; from Acknowledged' or 'InProgress' to 'Cancelled'. Patching\
+        \ of relatedParties[], relatedObjects[] or notes[] replaces previous value\
+        \ set."
+      operationId: "partiallyUpdateTicket"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of ticket that needs to be partially updated"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "ticket"
+        description: "ticket to be partially updated"
+        required: true
+        schema:
+          $ref: "#/definitions/UpdateTicket"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Ticket"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Ticket not found"
+        405:
+          description: "Validation exception"
+          schema:
+            $ref: "#/definitions/RuleXValidation"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "Ticket"
+    x-swagger-router-controller: "ticket"
+definitions:
+  TicketStateChangeNotification:
+    required:
+    - "event"
+    - "eventTime"
+    - "eventType"
+    properties:
+      event:
+        description: "Reference to ticket to be sent to listener in event notification."
+        $ref: "#/definitions/TicketEvent"
+      eventType:
+        type: "string"
+        description: "Type of notification to be sent: update, state change, information\
+          \ required, clearance request."
+      eventTime:
+        type: "string"
+        format: "date-time"
+        description: "Time notification event was sent."
+      eventId:
+        type: "string"
+        description: "Unique identifier of notification event."
+    description: "Use to communicate that decision was made to accept customer complaint\
+      \ and withdraw disputed charges. Also used to communicate that call with customer\
+      \ clarifies that dispute relates to another invoice than initially understood."
+  TicketEvent:
+    required:
+    - "ticket"
+    properties:
+      ticket:
+        description: "Ticket to be sent to listener in notification."
+        $ref: "#/definitions/Ticket"
+    description: "Reference to ticket to be sent to listener in event notification."
+  TicketInformationRequiredNotification:
+    required:
+    - "event"
+    - "eventTime"
+    - "eventType"
+    properties:
+      event:
+        description: "Reference to ticket to be sent to listener in event notification."
+        $ref: "#/definitions/TicketEvent"
+      eventType:
+        type: "string"
+        description: "Type of notification to be sent: update, state change, information\
+          \ required, clearance request."
+      eventTime:
+        type: "string"
+        format: "date-time"
+        description: "Time notification event was sent."
+      eventId:
+        type: "string"
+        description: "Unique identifier of notification event."
+    description: "Communicate with customer that additional information is required\
+      \ before being able to proceed. For example, appointment information is required."
+  TicketClearanceRequestNotification:
+    required:
+    - "event"
+    - "eventTime"
+    - "eventType"
+    properties:
+      event:
+        description: "Reference to ticket to be sent to listener in event notification."
+        $ref: "#/definitions/TicketEvent"
+      eventType:
+        type: "string"
+        description: "Type of notification to be sent: update, state change, information\
+          \ required, clearance request."
+      eventTime:
+        type: "string"
+        format: "date-time"
+        description: "Time notification event was sent."
+      eventId:
+        type: "string"
+        description: "Unique identifier of notification event."
+    description: "As a result of disputed charges withdrawal, ticket is assumed to\
+      \ be resolved. Notification asks Ticket requester to confirm resolution (by\
+      \ setting status to "
+  TicketlUpdateNotification:
+    required:
+    - "event"
+    - "eventTime"
+    - "eventType"
+    properties:
+      event:
+        description: "Reference to ticket to be sent to listener in event notification."
+        $ref: "#/definitions/TicketEvent"
+      eventType:
+        type: "string"
+        description: "Type of notification to be sent: update, state change, information\
+          \ required, clearance request."
+      eventTime:
+        type: "string"
+        format: "date-time"
+        description: "Time notification event was sent."
+      eventId:
+        type: "string"
+        description: "Unique identifier of notification event."
+    description: "Notify that ticket has been updated"
+  Note:
+    properties:
+      text:
+        type: "string"
+        description: "Text of the note"
+      date:
+        type: "string"
+        format: "date-time"
+        description: "Date of the note"
+      author:
+        type: "string"
+        description: "Author of the note"
+    description: "Extra-information about an entity (e.g. useful to add extra delivery\
+      \ information that could be useful for a human process : a digicode access to\
+      \ a building, ...)."
+  RelatedPartyRef:
+    required:
+    - "href"
+    - "id"
+    properties:
+      id:
+        type: "string"
+        description: "Identifier of the related party."
+      href:
+        type: "string"
+        description: "Reference to the related party"
+      role:
+        type: "string"
+        description: "Role of the related party"
+    description: "Defines party or partyRole linked to a specific entity. Used to\
+      \ represent an association between a resource and a party or role object playing\
+      \ a role regarding that object."
+  Hub:
+    required:
+    - "callback"
+    - "id"
+    - "query"
+    properties:
+      id:
+        type: "string"
+      callback:
+        type: "string"
+      query:
+        type: "string"
+    description: ""
+  Error:
+    required:
+    - "code"
+    - "message"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+        description: "Error code"
+      message:
+        type: "string"
+        description: "Error message"
+    description: "Error message"
+  RuleXValidation:
+    required:
+    - "validationDate"
+    - "validationReport"
+    properties:
+      validationDate:
+        type: "string"
+        description: "Validation date"
+      validationReport:
+        type: "array"
+        description: "Validation report"
+        items:
+          $ref: "#/definitions/RuleXValidationReport"
+    description: "Response structure returned by RuleX Validation service"
+  RuleXValidationReport:
+    required:
+    - "lineNumber"
+    - "message"
+    properties:
+      message:
+        type: "string"
+        description: "Validation message"
+      data:
+        type: "array"
+        description: "Validation data"
+        items:
+          $ref: "#/definitions/RuleXValidationReportData"
+      lineNumber:
+        type: "array"
+        description: "Validation issue line number"
+        items:
+          type: "string"
+    description: "Report returned by RuleX Validation service"
+  RuleXValidationReportData:
+    required:
+    - "characteristic"
+    - "characteristicValue"
+    properties:
+      characteristic:
+        type: "string"
+        description: "Validation issue characteristic"
+      characteristicValue:
+        type: "string"
+        description: "Validation issue characteristic value"
+    description: ""
+  Notification:
+    required:
+    - "eventTime"
+    - "eventType"
+    properties:
+      eventType:
+        type: "string"
+        description: "Type of notification to be sent: update, state change, information\
+          \ required, clearance request."
+      eventTime:
+        type: "string"
+        format: "date-time"
+        description: "Time notification event was sent."
+      eventId:
+        type: "string"
+        description: "Unique identifier of notification event."
+    description: "Represents types of notifications that can be sent to registered\
+      \ listeners."
+  RelatedObject:
+    properties:
+      href:
+        type: "string"
+        description: "Reference to the related object"
+      involvement:
+        type: "string"
+        description: "Involvement of the related object to this ticket"
+    description: "Objects linked with a ticket"
+  Ticket:
+    required:
+    - "creationDate"
+    - "href"
+    - "id"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier of the ticket"
+      href:
+        type: "string"
+        description: "Reference to the ticket"
+      creationDate:
+        type: "string"
+        format: "date-time"
+        description: "The date on which the ticket was created."
+      status:
+        type: "string"
+        description: "The current status of the ticket."
+        enum:
+        - "Submitted"
+        - "Rejected"
+        - "Acknowledged"
+        - "InProgressHeld"
+        - "InProgressPending"
+        - "Resolved"
+        - "Closed"
+        - "Cancelled"
+        default: "Acknowledged"
+      statusChangeReason:
+        type: "string"
+        description: "The reason of state change"
+      statusChangeDate:
+        type: "string"
+        format: "date-time"
+        description: "The date of status change"
+      resolutionDate:
+        type: "string"
+        format: "date-time"
+        description: "The date on which the issue being managed by the ticket was\
+          \ brought to its desired condition."
+      description:
+        type: "string"
+        description: "Description of what the ticket is to be used to manage -trouble,\
+          \ location, communication, meeting, etc."
+      severity:
+        type: "string"
+        description: "The severity of the trouble. It can be for example: minor, major,\
+          \ critical"
+      type:
+        type: "string"
+        description: "Type of ticket - trouble, location, meeting, etc."
+      correlationId:
+        type: "string"
+        description: "Additional identifier coming from an external system"
+      targetResolutionDate:
+        type: "string"
+        format: "date-time"
+        description: "Foreseen ticket resolution date"
+      note:
+        type: "array"
+        description: "Extra-information about the trouble ticket"
+        items:
+          $ref: "#/definitions/Note"
+      relatedParty:
+        type: "array"
+        items:
+          $ref: "#/definitions/RelatedPartyRef"
+      relatedObject:
+        type: "array"
+        items:
+          $ref: "#/definitions/RelatedObject"
+    description: ""
+  CreateTicket:
+    required:
+    - "description"
+    - "severity"
+    - "type"
+    properties:
+      description:
+        type: "string"
+        description: "Description of what the ticket is to be used to manage - trouble,\
+          \ location, communication, meeting, etc."
+      severity:
+        type: "string"
+        description: "The severity of the trouble. It can be for example: Minor, Major,\
+          \ Critical"
+        enum:
+        - "Minor"
+        - "Major"
+        - "Critical"
+        default: "Minor"
+      type:
+        type: "string"
+        description: "Type of ticket - trouble, location, meeting, etc."
+      correlationId:
+        type: "string"
+        description: "Additional identifier coming from an external system"
+      targetResolutionDate:
+        type: "string"
+        format: "date-time"
+        description: "Foreseen ticket resolution date"
+      note:
+        type: "array"
+        description: "Extra-information about the trouble ticket"
+        items:
+          $ref: "#/definitions/Note"
+      relatedParty:
+        type: "array"
+        items:
+          $ref: "#/definitions/RelatedPartyRef"
+      relatedObject:
+        type: "array"
+        items:
+          $ref: "#/definitions/RelatedObject"
+    description: ""
+  UpdateTicket:
+    properties:
+      status:
+        type: "string"
+        description: "The current status of the ticket."
+        enum:
+        - "Submitted"
+        - "Rejected"
+        - "Acknowledged"
+        - "InProgressHeld"
+        - "InProgressPending"
+        - "Resolved"
+        - "Closed"
+        - "Cancelled"
+        default: "Acknowledged"
+      statusChangeReason:
+        type: "string"
+        description: "The reason of state change"
+      statusChangeDate:
+        type: "string"
+        format: "date-time"
+        description: "The date of status change"
+      resolutionDate:
+        type: "string"
+        format: "date-time"
+        description: "The date on which the issue being managed by the ticket was\
+          \ brought to its desired condition."
+      description:
+        type: "string"
+        description: "Description of what the ticket is to be used to manage -trouble,\
+          \ location, communication, meeting, etc."
+      severity:
+        type: "string"
+        description: "The severity of the trouble. It can be for example: minor, major,\
+          \ critical"
+      type:
+        type: "string"
+        description: "Type of ticket - trouble, location, meeting, etc."
+      correlationId:
+        type: "string"
+        description: "Additional identifier coming from an external system"
+      targetResolutionDate:
+        type: "string"
+        format: "date-time"
+        description: "Foreseen ticket resolution date"
+      note:
+        type: "array"
+        description: "Extra-information about the trouble ticket"
+        items:
+          $ref: "#/definitions/Note"
+      relatedParty:
+        type: "array"
+        items:
+          $ref: "#/definitions/RelatedPartyRef"
+      relatedObject:
+        type: "array"
+        items:
+          $ref: "#/definitions/RelatedObject"
+    description: ""

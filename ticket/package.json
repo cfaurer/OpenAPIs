@@ -1,0 +1,27 @@
+{
+  "name": "amkb-cloud-ri---tmf-ticket-management-rest-api",
+  "version": "15.5.0",
+  "description": "This is a Reference Implementation (RI) built by AMKB Cloud using MagicDraw, Swagger Node & Nomos RuleX. You can find out more about AMKB Cloud \n at <a href=\"http://amkbcloud.com\">http://amkbcloud.com</a>, MagicDraw \n at <a href=\"http://www.nomagic.com\">http://www.nomagic.com</a>, Swagger Node at <a href=\"https://github.com/swagger-api/swagger-node\">https://github.com/swagger-api/swagger-node</a>, and Nomos RuleX at <a href=\"http://nomos-software.com\">http://nomos-software.com</a>",
+  "main": "app.js",
+  "scripts": {
+	"prestart": "npm install",
+	"start": "node app.js"
+  },
+  "keywords": [
+    "swagger"
+  ],
+  "license": "Apache-2.0",
+  "private": true,
+  "dependencies": {
+    "connect": "^3.2.0",
+    "express": "^4.12.3",
+    "js-yaml": "^3.3.0",
+    "mongoose": "^4.0.8",
+    "swagger-mongoose": "^0.1.2",
+    "swagger-tools": "0.10.1",
+    "javascript-state-machine": "^2.3.5",
+	"request": "2.78.0",
+	"request-debug": "0.2.0",
+	"nconf": "^0.8.4"
+  }
+}
